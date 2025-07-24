@@ -5,6 +5,7 @@ import { FaBug } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
 
+
 const NavBar = () => {
   const currentpath = usePathname();
   const links = [
