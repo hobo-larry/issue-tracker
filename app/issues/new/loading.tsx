@@ -5,3 +5,6 @@ export const LoadingIssueNewPage = () => {
     <div>Loading...</div>
   )
 }
+
+
+export default LoadingIssueNewPage;
