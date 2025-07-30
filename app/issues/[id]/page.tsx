@@ -8,9 +8,11 @@ interface Props {
   params: { id: string };
 }
 const IssueDetailsPage = async ({ params }: Props) => {
-  if (typeof params.id !== "number") notFound();
+  const { id } = await params;
+  const parsedId = Number(id);
+  if (typeof parsedId !== "number") notFound();
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: parsedId },
   });
   if (!issue) notFound();
   return (
