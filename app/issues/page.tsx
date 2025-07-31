@@ -1,13 +1,13 @@
-import React from 'react'
 import { Table } from "@radix-ui/themes";
-import Link from "../components/Link";
+
 import prisma from "@/prisma/client";
-import IssueStatusBadge from "../components/IssueStatusBadge";
-import delay from "delay";
+
+import { IssueStatusBadge, Link } from "@/app/components/index";
+
 import IssueActions from "./IssueActions";
 const IssuesPage = async () => {
   const issues = (await prisma.issue.findMany()).reverse();
-  await delay(1000);
+
   return (
     <div>
       <IssueActions />
@@ -46,4 +46,4 @@ const IssuesPage = async () => {
   );
 };
 
-export default IssuesPage
+export default IssuesPage;
