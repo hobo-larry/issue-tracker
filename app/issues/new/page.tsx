@@ -1,9 +1,8 @@
 'use client'
-import { Button, TextField, Callout, Text } from "@radix-ui/themes";
-import { MdOutlineErrorOutline } from "react-icons/md";
+import { Button, TextField } from "@radix-ui/themes";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false, //The ssr: false ensures it won't be run on the server, avoiding the document error.
+  ssr: false,
 });
 import "easymde/dist/easymde.min.css";
 import { useForm, Controller } from "react-hook-form";
