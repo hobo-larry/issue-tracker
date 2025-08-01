@@ -4,11 +4,14 @@ import Link from 'next/link'
 
 const EditIssueButton = ({issueId}:{issueId:number}) => {
   return (
-    <Button>
-          <Pencil2Icon />
-          <Link href={`/issues/${issueId}/edit`}>Edit Issue</Link>
-        </Button>
-  )
+    <Link
+      href={`/issues/${issueId}/edit`}
+      className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+    >
+      <Pencil2Icon className="mr-2" />
+      Edit Issue
+    </Link>
+  );
 }
 
 export default EditIssueButton
