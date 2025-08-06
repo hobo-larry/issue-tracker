@@ -4,12 +4,12 @@ import React from 'react'
 
 const IssueActions = () => {
   return (
-     <div className="mb-5">
-            <Button>
-              <Link href="/issues/new">Issues Page</Link>
-            </Button>
-          </div>
-  )
+    <div className="mb-5">
+      <Button>
+        <Link href="/issues/new">Add New issue</Link>
+      </Button>
+    </div>
+  );
 }
 
 export default IssueActions
