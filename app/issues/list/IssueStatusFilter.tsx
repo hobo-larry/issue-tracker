@@ -14,14 +14,19 @@ const statuses:{label:string, value?:Status}[]=[{
 const issueStatusFilter = () => {
   return (
     <Select.Root>
-    <Select.Trigger placeholder='Filter by status...'/>
-    <Select.Content>
-        {statuses.map(status=>(
-            <Select.Item key={status.value} value={status.value || ''}>{status.label} </Select.Item>
-        ))}
-    </Select.Content>
+  <Select.Trigger placeholder="Filter by status..." />
+  <Select.Content>
+    {statuses.map((status) => (
+      <Select.Item
+        key={`${status.value ?? 'empty'}-${status.label}`}
+        value={status.value || 'unassigned'}
+      >
+        {status.label}
+      </Select.Item>
+    ))}
+  </Select.Content>
+</Select.Root>
 
-    </Select.Root>
   )
 }
 
