@@ -6,18 +6,25 @@ import { IssueStatusBadge, Link } from "@/app/components/index";
 
 import IssueActions from "./IssueActions";
 import { Status } from "@prisma/client";
-import { object } from "zod";
-const IssuesPage = async ({
-  searchParams,
-}: {
-  searchParams: { status: Status };
-}) => {
+type SearchParams = Promise<{ status: Status }>;
+
+interface Props {
+  searchParams: SearchParams;
+}
+
+export default async function IssuesPage(props: Props) {
+  const searchParams = await props.searchParams;
   const statuses = Object.values(Status);
+
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
     : undefined;
-  const where = { status };
-  const issues = (await prisma.issue.findMany({ where })).reverse();
+
+  const issues = await prisma.issue.findMany({
+    where: {
+      status,
+    },
+  });
 
   return (
     <div>
@@ -55,7 +62,6 @@ const IssuesPage = async ({
       </Table.Root>
     </div>
   );
-};
+}
 export const dynamic = "force-dynamic";
 
-export default IssuesPage;
