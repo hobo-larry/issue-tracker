@@ -32,24 +32,23 @@ export default async function IssuesPage(props: Props) {
     ? searchParams.status
     : undefined;
 
-  const orderBy = columns
-    .map((column) => column.value)
-    .includes(searchParams.orderBy)
-    ? { [searchParams.orderBy]: searchParams.direction || "desc" }
-    : { createdAt: "desc" }; // default sorting
+  const validDirections = ["asc", "desc"] as const;
+  const direction = validDirections.includes(searchParams.direction as any)
+    ? (searchParams.direction as "asc" | "desc")
+    : "desc";
 
-  const issues = await prisma.issue.findMany({
-    where: {
-      status,
-    },
-    orderBy: searchParams.orderBy
-      ? {
-          [searchParams.orderBy]: (searchParams.direction || "desc") as
-            | "asc"
-            | "desc",
-        }
-      : { createdAt: "desc" },
-  });
+const orderBy = columns
+  .map((column) => column.value)
+  .includes(searchParams.orderBy)
+  ? { [searchParams.orderBy]: direction }
+  : undefined;
+
+const issues = await prisma.issue.findMany({
+  where: {
+    status,
+  },
+  orderBy,
+});
 
   return (
     <div>
