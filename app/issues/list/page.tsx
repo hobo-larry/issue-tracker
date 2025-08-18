@@ -14,6 +14,7 @@ interface Props {
   searchParams: SearchParams;
 }
 
+
 export default async function IssuesPage(props: Props) {
   const columns: { label: string; value: keyof Issue; className?: string }[] = [
     { label: "Issue", value: "title" },
@@ -28,10 +29,17 @@ export default async function IssuesPage(props: Props) {
     ? searchParams.status
     : undefined;
 
+  const orderBy = columns
+    .map((column) => column.value)
+    .includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: "asc" }
+    : undefined;
+
   const issues = await prisma.issue.findMany({
     where: {
       status,
     },
+    orderBy,
   });
 
   return (
