@@ -14,11 +14,13 @@ export default async function Home() {
   const closed = await prisma.issue.count({
     where: { status: "CLOSED" },
   });
+  const encapsulatedValues = { open, closed, inProgress };
+  
   return (
     <Grid columns={{ initial: "1", md: "2" }} gap="5">
       <Flex direction="column" gap="5">
-        <IssueSummary open={open} closed={closed} inProgress={inProgress} />
-        <IssueChart open={open} closed={closed} inProgress={inProgress} />
+        <IssueSummary {...encapsulatedValues} />
+        <IssueChart {...encapsulatedValues} />
       </Flex>
       <LatestIssues />
     </Grid>
