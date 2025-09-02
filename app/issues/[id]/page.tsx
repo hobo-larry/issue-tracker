@@ -14,7 +14,7 @@ const fetchUser = cache((issueId: number) =>
 );
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 const IssueDetailsPage = async ({ params }: Props) => {
   const session = await getServerSession(authOptions);
