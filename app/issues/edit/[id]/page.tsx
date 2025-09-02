@@ -5,11 +5,13 @@ import { notFound } from "next/navigation";
 
 import SsrFalse from "../../_components/SsrFalse";
 <SsrFalse />;
-interface Props {
-  params: { id: string };
-}
 
-const EditIssuePage = async ({ params }: Props) => {
+
+const EditIssuePage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
   const { id } = await params;
   const parsedId = Number(id);
   const issue = await prisma.issue.findUnique({
