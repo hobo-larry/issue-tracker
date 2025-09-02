@@ -49,17 +49,23 @@ export async function DELETE(
 ) {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({}, { status: 401 });
-  const { id } = await params;
-  const parsedId = Number(id);
+
+  const { id } = params; // Remove `await` since params is not a Promise
+  const parsedId = Number(id); // Convert string to number for Prisma
+  if (isNaN(parsedId)) {
+    return NextResponse.json({ error: "Invalid issue ID" }, { status: 400 });
+  }
+
   const issue = await prisma.issue.findUnique({
     where: { id: parsedId },
   });
-  if (!issue)
+  if (!issue) {
     return NextResponse.json({ error: "Invalid issue" }, { status: 404 });
+  }
 
   await prisma.issue.delete({
-    where: { id: issue.id },
+    where: { id: parsedId }, // Use parsedId directly
   });
 
-  return NextResponse.json({});
+  return NextResponse.json({}, { status: 200 });
 }
