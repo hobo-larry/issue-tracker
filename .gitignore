@@ -34,6 +34,7 @@ yarn-error.log*
 .env*.local
 .env
 .env.sentry-build-plugin
+prisma/schema.prisma
 
 # typescript
 *.tsbuildinfo
