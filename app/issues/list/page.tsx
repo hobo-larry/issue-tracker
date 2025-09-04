@@ -5,6 +5,7 @@ import { Issue, Status } from "@prisma/client";
 import IssueActions from "./IssueActions";
 import IssueTable, { columnNames, IssueQuery } from "./IssueTable";
 import { Metadata } from "next";
+import { Text } from "@radix-ui/themes";
 
 interface Props {
   searchParams: Promise<IssueQuery>;
@@ -43,13 +44,19 @@ export default async function IssuesPage(props: Props) {
   return (
     <div>
       <IssueActions />
-      <IssueTable searchParams={searchParams} issues={issues} />
+      {issueCount ? (
+        <div>
+          <IssueTable searchParams={searchParams} issues={issues} />
 
-      <Pagination
-        pageSize={pageSize}
-        currentPage={page}
-        itemCount={issueCount}
-      />
+          <Pagination
+            pageSize={pageSize}
+            currentPage={page}
+            itemCount={issueCount}
+          />
+        </div>
+      ) : (
+        <Text>No Issues Found...</Text>
+      )}
     </div>
   );
 }
