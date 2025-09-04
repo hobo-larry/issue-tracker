@@ -7,7 +7,7 @@ import IssueTable, { columnNames, IssueQuery } from "./IssueTable";
 import { Metadata } from "next";
 
 interface Props {
-  searchParams: IssueQuery;
+  searchParams: Promise<IssueQuery>;
 }
 
 export default async function IssuesPage(props: Props) {
