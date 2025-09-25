@@ -1,0 +1,7 @@
+1Copyright 2023 Code with Moshcodewithmosh.comAdditional ExercisesHere are some additional features you can build.
+•Implement a descending sort on the Issue List page.
+•Add a drop-down list to select the page size. 
+•On the Issue Detail page, add a drop-down list for changing the status of an issue (similar to how we have a drop-down list for changing the assignee).
+•When an issue is assigned to a user, automatically set the status to IN_PROGRESS.
+•Implement the ability to filter issues by assignee.
+•Introduce a feature to add comments below an issue.
