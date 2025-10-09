@@ -47,12 +47,13 @@ export default async function IssuesPage(props: Props) {
       {issueCount ? (
         <div>
           <IssueTable searchParams={searchParams} issues={issues} />
-
-          <Pagination
-            pageSize={pageSize}
-            currentPage={page}
-            itemCount={issueCount}
-          />
+          <div className="mt-3">
+            <Pagination
+              pageSize={pageSize}
+              currentPage={page}
+              itemCount={issueCount}
+            />
+          </div>
         </div>
       ) : (
         <Text>No Issues Found...</Text>
