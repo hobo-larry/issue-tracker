@@ -11,15 +11,11 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
-
-
+import "easymde/dist/easymde.min.css";
 
 type IssueFormData = z.infer<typeof issueSchema>;
 
-
-
-
-const IssueForm = ({issue}:{issue?:Issue}) => {
+const IssueForm = ({ issue }: { issue?: Issue }) => {
   const [error, setError] = useState("");
   const router = useRouter();
   const {
@@ -60,7 +56,7 @@ const IssueForm = ({issue}:{issue?:Issue}) => {
         <Controller
           name="description"
           control={control}
-          defaultValue={issue?.description} // Ensure a default empty string to avoid undefined
+          defaultValue={issue?.description || ""} // Ensure a default empty string to avoid undefined
           render={({ field }) => (
             <SimpleMDE
               placeholder="Description"
