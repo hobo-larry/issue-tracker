@@ -11,7 +11,7 @@ export default defineConfig({
 
   datasource: {
     // For CLI commands (migrations, generate, studio, etc.)
-    url: env("DATABASE_URL"), // Use your pooled URL here (e.g. Supabase, Neon, Railway)
+    url: env("DIRECT_URL"), // Use your pooled URL here (e.g. Supabase, Neon, Railway)
     //directUrl: env("DIRECT_URL"),
   },
 });
