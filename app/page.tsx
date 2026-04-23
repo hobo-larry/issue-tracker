@@ -5,7 +5,8 @@ import LatestIssues from "./LatestIssues";
 import { Flex, Grid } from "@radix-ui/themes";
 import { Metadata } from "next";
 
-export const revalidate = 60; // Cache page for 60 seconds
+//export const revalidate = 60; // Cache page for 60 seconds rly good for alot of users accecing at the same time and it makes website faster
+export const dynamic = 'force-dynamic'; //the opposite, everytime someone enters the website it accesses the db, super slow
 
 export default async function Home() {
   const [open, inProgress, closed] = await Promise.all([
