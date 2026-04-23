@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    // This helps Turbopack find the Prisma client
+    turbo: {
+      resolveAlias: {
+        ".prisma/client/default": "./node_modules/.prisma/client/default.js",
+      },
+    },
+  },
+  serverExternalPackages: ["@prisma/client", "pg"],
   async headers() {
     return [
       {
