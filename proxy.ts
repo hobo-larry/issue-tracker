@@ -1,16 +1,24 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
- 
-// This function can be marked `async` if using `await` inside
-export function proxy(request: NextRequest) {
-    return NextResponse.next();
-}
+import { getToken } from "next-auth/jwt";
 
+export async function proxy(request: NextRequest) {
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  if (!token) {
+    const loginUrl = new URL("/api/auth/signin", request.url);
+
+    loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);
+
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return NextResponse.next();
+}
 
 export const config = {
-    matcher:[
-        '/issues/new',
-        '/issues/edit/:id+'
-        // will be adding more
-    ]
-}
+  matcher: ["/issues/new", "/issues/edit/:id+"],
+};
