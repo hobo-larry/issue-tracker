@@ -17,7 +17,9 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   session: {
-    strategy: "jwt",
+    strategy: "database",
+    updateAge: 24 * 60 * 60,
+    maxAge: 12 * 60 * 60, //12hours
   },
   // O NextAuth já gerencia os nomes (com ou sem __Secure)
   // automaticamente com base no protocolo (HTTP vs HTTPS).
