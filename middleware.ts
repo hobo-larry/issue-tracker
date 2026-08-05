@@ -1,8 +1,8 @@
-// middleware.ts
-import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-// O Next.js exige que o export seja "default" ou uma função chamada "middleware"
-export default withAuth();
+export function middleware() {
+  return NextResponse.next();
+}
 
 export const config = {
   // As rotas que você quer proteger
