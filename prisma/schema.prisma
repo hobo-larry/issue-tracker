@@ -16,6 +16,10 @@ datasource db {
   
   
 }
+enum Role {
+  USER
+  ADMIN
+}
 
 model Issue {
   id               Int      @id @default(autoincrement())
@@ -70,6 +74,8 @@ model User {
   email          String?   @unique
   emailVerified  DateTime? @map("email_verified")
   image          String?
+  role           Role      @default(USER)
+  createdAt      DateTime  @default(now())
   accounts       Account[]
   sessions       Session[]
   assignedIssues Issue[]
