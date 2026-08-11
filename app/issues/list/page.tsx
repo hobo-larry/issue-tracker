@@ -28,7 +28,7 @@ export default async function IssuesPage(props: Props) {
 
   const orderBy = columnNames.includes(searchParams.orderBy)
     ? { [searchParams.orderBy]: direction }
-    : undefined;
+    : { createdAt: direction };
   const page = parseInt(searchParams.page) || 1;
   const pageSize = 10;
 
