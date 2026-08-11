@@ -1,10 +1,12 @@
 import { IssueStatusBadge } from '@/app/components'
 import { ArrowUpIcon, ArrowDownIcon } from '@radix-ui/react-icons'
-import { Table } from '@radix-ui/themes'
+import { Avatar, Card, Flex, Heading, Table } from "@radix-ui/themes";
 import Link from 'next/link'
 import React from 'react'
 import NextLink from "next/link";
 import { Issue, Status } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+
 
 
 export interface IssueQuery{
@@ -16,9 +18,14 @@ export interface IssueQuery{
 }
 
 interface Props {
-  searchParams: IssueQuery
-  issues:Issue[]
+  searchParams: IssueQuery;
+  issues: IssueWithAssignedUser[];
 }
+type IssueWithAssignedUser = Prisma.IssueGetPayload<{
+  include: {
+    assignedToUser: true;
+  };
+}>;
 
 const IssueTable = ({searchParams, issues}:Props) => {
   
@@ -27,60 +34,71 @@ const IssueTable = ({searchParams, issues}:Props) => {
     
   return (
     <Table.Root variant="surface">
-        <Table.Header>
-          <Table.Row>
-            {columns.map((column) => (
-              <Table.ColumnHeaderCell
-                key={column.value}
-                className={column.className}
+      <Table.Header>
+        <Table.Row>
+          {columns.map((column) => (
+            <Table.ColumnHeaderCell
+              key={column.value}
+              className={column.className}
+            >
+              <NextLink
+                href={{
+                  query: {
+                    ...searchParams,
+                    orderBy: column.value,
+                    direction:
+                      searchParams.orderBy === column.value
+                        ? searchParams.direction === "asc"
+                          ? "desc"
+                          : "asc"
+                        : "asc",
+                  },
+                }}
               >
-                <NextLink
-                  href={{
-                    query: {
-                      ...searchParams,
-                      orderBy: column.value,
-                      direction:
-                        searchParams.orderBy === column.value
-                          ? searchParams.direction === "asc"
-                            ? "desc"
-                            : "asc"
-                          : "asc",
-                    },
-                  }}
-                >
-                  {column.label}
-                </NextLink>
-                {column.value === searchParams.orderBy ? (
-                  searchParams.direction === "asc" ? (
-                    <ArrowUpIcon className="inline" />
-                  ) : (
-                    <ArrowDownIcon className="inline" />
-                  )
-                ) : null}
-              </Table.ColumnHeaderCell>
-            ))}
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {issues.map((issue) => (
-            <Table.Row key={issue.id}>
-              <Table.Cell>
-                <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
-                <div className="block md:hidden">
-                  <IssueStatusBadge status={issue.status} />
-                </div>
-              </Table.Cell>
-              <Table.Cell className="hidden md:table-cell">
-                <IssueStatusBadge status={issue.status} />
-              </Table.Cell>
-              <Table.Cell className="hidden md:table-cell">
-                {issue.createdAt.toDateString()}
-              </Table.Cell>
-            </Table.Row>
+                {column.label}
+              </NextLink>
+              {column.value === searchParams.orderBy ? (
+                searchParams.direction === "asc" ? (
+                  <ArrowUpIcon className="inline" />
+                ) : (
+                  <ArrowDownIcon className="inline" />
+                )
+              ) : null}
+            </Table.ColumnHeaderCell>
           ))}
-        </Table.Body>
-      </Table.Root>
-  )
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {issues.map((issue) => (
+          <Table.Row key={issue.id}>
+            <Table.Cell>
+              <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
+              <div className="block md:hidden">
+                <IssueStatusBadge status={issue.status} />
+              </div>
+            </Table.Cell>
+            <Table.Cell className="hidden md:table-cell">
+              <IssueStatusBadge status={issue.status} />
+            </Table.Cell>
+            <Table.Cell className="hidden md:table-cell">
+              {issue.createdAt.toDateString()}
+            </Table.Cell>
+            <Table.Cell>
+              {" "}
+              {issue.assignedToUser && (
+                <Avatar
+                  size="2"
+                  radius="full"
+                  src={issue.assignedToUser.image ?? undefined}
+                  fallback="?"
+                />
+              )}{" "}
+            </Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table.Root>
+  );
 }
  const columns: { label: string; value: keyof Issue; className?: string }[] = [
     { label: "Issue", value: "title" },

@@ -1,6 +1,7 @@
 import prisma from "@/prisma/client";
 
 import Pagination from "@/app/components/Pagination";
+import { Avatar, Card, Flex, Heading, Table } from "@radix-ui/themes";
 import { Issue, Status } from "@prisma/client";
 import IssueActions from "./IssueActions";
 import IssueTable, { columnNames, IssueQuery } from "./IssueTable";
@@ -37,6 +38,9 @@ export default async function IssuesPage(props: Props) {
     orderBy,
     skip: (page - 1) * pageSize,
     take: pageSize,
+    include: {
+      assignedToUser: true,
+    },
   });
 
   const issueCount = await prisma.issue.count({ where });
@@ -47,6 +51,7 @@ export default async function IssuesPage(props: Props) {
       {issueCount ? (
         <div>
           <IssueTable searchParams={searchParams} issues={issues} />
+
           <div className="mt-3">
             <Pagination
               pageSize={pageSize}
