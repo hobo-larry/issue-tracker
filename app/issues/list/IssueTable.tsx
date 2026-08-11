@@ -83,8 +83,7 @@ const IssueTable = ({searchParams, issues}:Props) => {
             <Table.Cell className="hidden md:table-cell">
               {issue.createdAt.toDateString()}
             </Table.Cell>
-            <Table.Cell>
-              {" "}
+            <Table.Cell className="hidden md:table-cell">
               {issue.assignedToUser && (
                 <Avatar
                   size="2"
@@ -92,7 +91,7 @@ const IssueTable = ({searchParams, issues}:Props) => {
                   src={issue.assignedToUser.image ?? undefined}
                   fallback="?"
                 />
-              )}{" "}
+              )}
             </Table.Cell>
           </Table.Row>
         ))}
@@ -101,10 +100,15 @@ const IssueTable = ({searchParams, issues}:Props) => {
   );
 }
  const columns: { label: string; value: keyof Issue; className?: string }[] = [
-    { label: "Issue", value: "title" },
-    { label: "Status", value: "status", className: "hidden md:table-cell" },
-    { label: "Created", value: "createdAt", className: "hidden md:table-cell" },
-  ];
+   { label: "Issue", value: "title" },
+   { label: "Status", value: "status", className: "hidden md:table-cell" },
+   { label: "Created", value: "createdAt", className: "hidden md:table-cell" },
+   {
+     label: "Assigned To",
+     value: "assignedToUserId",
+     className: "hidden md:table-cell",
+   },
+ ];
 export const columnNames = columns.map(column => column.value)
 
 export default IssueTable

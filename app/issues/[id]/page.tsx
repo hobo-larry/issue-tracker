@@ -1,6 +1,7 @@
 import prisma from "@/prisma/client";
-import { Box, Flex, Grid } from "@radix-ui/themes";
+import { Box, Flex, Grid, Avatar } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
+
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
 import DeleteIssueButton from "./DeleteIssueButton";
@@ -10,8 +11,13 @@ import AssigneeSelect from "./AssigneeSelect";
 import { cache } from "react";
 import AssignStatus from "./AssignStatus";
 
-const fetchUser = cache((issueId: number) =>
-  prisma.issue.findUnique({ where: { id: issueId } })
+const fetchIssue = cache((issueId: number) =>
+  prisma.issue.findUnique({
+    where: { id: issueId },
+    include: {
+      assignedToUser: true,
+    },
+  }),
 );
 
 interface Props {
@@ -22,7 +28,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
   const { id } = await params;
   const parsedId = Number(id);
   if (typeof parsedId !== "number") notFound();
-  const issue = await fetchUser(parsedId);
+  const issue = await fetchIssue(parsedId);
 
   if (!issue) notFound();
 
@@ -30,6 +36,14 @@ const IssueDetailsPage = async ({ params }: Props) => {
     <Grid columns={{ initial: "1", sm: "5" }} gap="5">
       <Box className="lg:col-span-4">
         <IssueDetails issue={issue} />
+        {issue.assignedToUser && (
+          <Avatar
+            size="2"
+            radius="full"
+            src={issue.assignedToUser.image ?? undefined}
+            fallback="?"
+          />
+        )}
       </Box>
       {session && session?.user.role == "ADMIN" && (
         <Box>
@@ -47,7 +61,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
   const parsedId = Number(id);
-  const issue = await fetchUser(parsedId);
+  const issue = await fetchIssue(parsedId);
   return {
     title: issue?.title,
     description: "Details of issue " + issue?.id,
