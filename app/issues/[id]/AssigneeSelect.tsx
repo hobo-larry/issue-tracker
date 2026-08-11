@@ -19,8 +19,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
       toast.error("changes could not be saved");
     }
   };
-            console.log("users:", users);
-            console.log("Is array?", Array.isArray(users));
+
   return (
     <>
       <Select.Root
