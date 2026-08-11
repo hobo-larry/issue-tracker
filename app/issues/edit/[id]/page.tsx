@@ -1,5 +1,5 @@
 import React from "react";
-
+import AuthGuard from "@/app/components/AuthGuard";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
 
@@ -18,7 +18,11 @@ const EditIssuePage = async ({
     where: { id: parsedId },
   });
   if (!issue) notFound();
-  return <SsrFalse issue={issue} />;
+  return (
+    <AuthGuard>
+      <SsrFalse issue={issue} />
+    </AuthGuard>
+  );
 };
 
 export default EditIssuePage;

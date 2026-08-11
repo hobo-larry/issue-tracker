@@ -2,12 +2,13 @@ import prisma from "@/prisma/client";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
+import { redirect } from "next/navigation";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
 
-  if (session?.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  {
+    session?.user.role !== "ADMIN" && redirect("/api/auth/signin");
   }
 
   const users = await prisma.user.findMany({
