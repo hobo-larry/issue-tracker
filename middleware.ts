@@ -1,12 +1,19 @@
-import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export default withAuth({
-  pages: {
-    signIn: "/api/auth/signin", // or your custom login page
-  },
-});
+export async function middleware(request: NextRequest) {
+  const token = await getToken({ req: request });
+
+  if (!token) {
+    // Not logged in → redirect to sign in
+    return NextResponse.redirect(new URL("/api/auth/signin", request.url));
+  }
+
+  // User is authenticated → continue
+  return NextResponse.next();
+}
 
 export const config = {
-  // As rotas que você quer proteger
-  matcher: ["/issues/new", "/issues/edit/:path*", "/api/users"],
+  matcher: ["/issues/new", "/issues/edit/:path*"],
 };
