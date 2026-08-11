@@ -19,7 +19,8 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
       toast.error("changes could not be saved");
     }
   };
-
+            console.log("users:", users);
+            console.log("Is array?", Array.isArray(users));
   return (
     <>
       <Select.Root
@@ -31,6 +32,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
           <Select.Group>
             <Select.Label>Suggestion</Select.Label>
             <Select.Item value="unassigned">Unassigned</Select.Item>
+
             {users?.map((user) => (
               <Select.Item key={user.id} value={user.id}>
                 {user.name}

@@ -31,7 +31,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
       <Box className="lg:col-span-4">
         <IssueDetails issue={issue} />
       </Box>
-      {session && (
+      {session && session?.user.role == "ADMIN" && (
         <Box>
           <Flex direction="column" gap="3">
             <AssigneeSelect issue={issue} />
