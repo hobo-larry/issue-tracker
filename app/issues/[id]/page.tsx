@@ -36,15 +36,8 @@ const IssueDetailsPage = async ({ params }: Props) => {
     <Grid columns={{ initial: "1", sm: "5" }} gap="5">
       <Box className="lg:col-span-4">
         <IssueDetails issue={issue} />
-        {issue.assignedToUser && (
-          <Avatar
-            size="2"
-            radius="full"
-            src={issue.assignedToUser.image ?? undefined}
-            fallback="?"
-          />
-        )}
       </Box>
+
       {session && session?.user.role == "ADMIN" && (
         <Box>
           <Flex direction="column" gap="3">
